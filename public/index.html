@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Financial Market Simulation</title>
+        <link rel="stylesheet" href="./css/styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    </head>
+
+    <body>
+        <header>
+            <h1>Financial Market Simulation</h1>
+        </header>
+
+        <main>
+            <section id="user-input">
+                <h2>Simulation Parameters</h2>
+                <form id="simulation-form">
+                    <label for="initialPrice">Initial Stock Price:</label>
+                    <input type="number" id="initialPrice" name="initialPrice">
+    
+                    <label for="volatility">Volatility (%):</label>
+                    <input type="number" id="volatility" name="volatility">
+    
+                    <label for="timeHorizon">Time Horizon (days):</label>
+                    <input type="number" id="timeHorizon" name="timeHorizon">
+    
+                    <label for="iterations">Number of Iterations:</label>
+                    <input type="number" id="iterations" name="iterations" >
+    
+                    <button type="submit">Run Simulation</button>
+                </form>
+            </section>
+
+            <section id="results">
+                <h2>Simulation Results</h2>
+                <canvas id="simulationChart"></canvas>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Financial Simulations</p>
+        </footer>
+
+        <script src="./js/main.js"></script>
+
+    </body>
+
+
+</html>
