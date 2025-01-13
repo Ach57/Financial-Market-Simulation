@@ -70,7 +70,25 @@ function displaySimulationChart(data) {
             
         },
     });
-}
+};
+
+
+function changeSimulationType(){
+    var selectedSimulation = document.getElementById("simulationSelect").value;
+    document.getElementById("monteCarloForm").style.display = "none"  ;
+    document.getElementById("markovChainForm").style.display = "none";
+    document.getElementById("geneticAlgorithmForm").style.display = "none";
+
+    // Show the selected simulation form
+    if (selectedSimulation === "monteCarlo") {
+        document.getElementById("monteCarloForm").style.display = "block";
+    } else if (selectedSimulation === "markovChain") {
+        document.getElementById("markovChainForm").style.display = "block";
+    } else if (selectedSimulation === "geneticAlgorithm") {
+        document.getElementById("geneticAlgorithmForm").style.display = "block";
+    }
+};
+
 
 
 

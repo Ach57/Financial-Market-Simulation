@@ -16,24 +16,78 @@
         </header>
 
         <main>
+            <section id ="simulation-type">
+                <h2>Select Simulation Type</h2>
+                <select id="simulationSelect" onchange="changeSimulationType()">
+                    <option value="monteCarlo">Monte Carlo</option>
+                    <option value="markovChain">Markov Chain</option>
+                    <option value="geneticAlgorithm">Genetic Algorithm</option>
+                </select>
+
+            </section>
+
             <section id="user-input">
                 <h2>Simulation Parameters</h2>
                 <form id="simulation-form">
-                    <label for="initialPrice">Initial Stock Price:</label>
-                    <input type="number" id="initialPrice" name="initialPrice">
+                    <!-- Monte Carlo form fields (default) -->
+                    <div id="monteCarloForm">
+                        <label for="initialPrice">Initial Stock Price:</label>
+                        <input type="number" id="initialPrice" name="initialPrice" value="1000">
     
-                    <label for="volatility">Volatility (%):</label>
-                    <input type="number" id="volatility" name="volatility">
+                        <label for="volatility">Volatility (%):</label>
+                        <input type="number" id="volatility" name="volatility" value="3">
     
-                    <label for="timeHorizon">Time Horizon (days):</label>
-                    <input type="number" id="timeHorizon" name="timeHorizon">
+                        <label for="timeHorizon">Time Horizon (days):</label>
+                        <input type="number" id="timeHorizon" name="timeHorizon" value="30">
     
-                    <label for="iterations">Number of Iterations:</label>
-                    <input type="number" id="iterations" name="iterations" >
+                        <label for="iterations">Number of Iterations:</label>
+                        <input type="number" id="iterations" name="iterations" value="1000">
     
-                    <button type="submit">Run Simulation</button>
+                        <button type="submit">Run Simulation</button>
+                    </div>
+    
+                    <!-- Markov Chain form fields (hidden by default) -->
+                    <div id="markovChainForm" style="display: none;">
+                        <label for="initialStock">Initial Stock Price:</label>
+                        <input type="number" id="initialStock" name="initialStock" value="1000">
+    
+                        <label for="timeHorizon">Time Horizon (steps):</label>
+                        <input type="number" id="timeHorizonMarkov" name="timeHorizon" value="30">
+    
+                        <label for="iterations">Number of Iterations:</label>
+                        <input type="number" id="iterationsMarkov" name="iterations" value="1000">
+    
+                        <h3>Transition Probabilities</h3>
+                        <label for="bullishToBullish">Bullish to Bullish Probability:</label>
+                        <input type="number" id="bullishToBullish" name="bullishToBullish" value="0.7">
+    
+                        <label for="bullishToBearish">Bullish to Bearish Probability:</label>
+                        <input type="number" id="bullishToBearish" name="bullishToBearish" value="0.2">
+    
+                        <label for="bullishToStagnant">Bullish to Stagnant Probability:</label>
+                        <input type="number" id="bullishToStagnant" name="bullishToStagnant" value="0.1">
+    
+                        <button type="submit">Run Simulation</button>
+                    </div>
+    
+                    <!-- Genetic Algorithm form fields (hidden by default) -->
+                    <div id="geneticAlgorithmForm" style="display: none;">
+                        <label for="populationSize">Population Size:</label>
+                        <input type="number" id="populationSize" name="populationSize" value="100">
+    
+                        <label for="mutationRate">Mutation Rate (%):</label>
+                        <input type="number" id="mutationRate" name="mutationRate" value="2">
+    
+                        <label for="crossoverRate">Crossover Rate (%):</label>
+                        <input type="number" id="crossoverRate" name="crossoverRate" value="70">
+    
+                        <label for="generations">Number of Generations:</label>
+                        <input type="number" id="generations" name="generations" value="1000">
+    
+                        <button type="submit">Run Simulation</button>
+                    </div>
                 </form>
-            </section>
+            </section>  
 
             <section id="results">
                 <h2>Simulation Results</h2>
