@@ -1,13 +1,39 @@
 document.getElementById('simulation-form').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    // Get form data
-    const formData = {
-        initialPrice: document.getElementById('initialPrice').value,
-        volatility: document.getElementById('volatility').value,
-        timeHorizon: document.getElementById('timeHorizon').value,
-        iterations: document.getElementById('iterations').value,
-    };
+    const simulationType = document.getElementById('simulationSelect').value;
+    var formData;
+    if (simulationType ==="monteCarlo"){
+            // Get form data
+        formData = {
+            simulationType: simulationType,
+            initialPrice: document.getElementById('initialPrice').value,
+            volatility: document.getElementById('volatility').value,
+            timeHorizon: document.getElementById('timeHorizon').value,
+            iterations: document.getElementById('iterations').value,
+        };
+
+    }else if (simulationType==="markovChain"){
+        formData = {
+            simulationType: simulationType,
+            initialPrice: document.getElementById('initialPrice').value,
+            timeHorizon: document.getElementById("timeHorizon").value,
+            iterations: document.getElementById("iterations").value,
+            bullishToBullish: document.getElementById("bullishToBullish").value,
+            bullishToBearish: document.getElementById("bullishToBearish").value,
+            bullishToStagnant: document.getElementById("bullishToStagnant").value,
+        }
+
+    }else{
+        formData = {
+            simulationType: simulationType,
+            populationSize: document.getElementById("populationSize").value,
+            mutationRate: document.getElementById("mutationRate").value,
+            crossoverRate: document.getElementById("crossoverRate").value,
+            generations: document.getElementById("generations").value
+
+        }
+    }
 
     try {
         // Send a POST request to the backend
@@ -22,7 +48,7 @@ document.getElementById('simulation-form').addEventListener('submit', async (eve
         if (result.success) {
             // Display results in the chart
             const results = result.data;
-            displaySimulationChart(results);
+            displaySimulationChart(simulationType,results);
         } else {
             console.error('Simulation failed:', result.message);
             alert('Simulation failed. Please try again.');
@@ -33,43 +59,90 @@ document.getElementById('simulation-form').addEventListener('submit', async (eve
     }
 });
 
-function displaySimulationChart(data) {
-    const results = data.results; 
+function displaySimulationChart(simulationType,data) {
     const ctx = document.getElementById('simulationChart').getContext('2d');
-    
+
     if (window.simulationChart && typeof window.simulationChart.destroy === 'function') {
         window.simulationChart.destroy();
     }
 
-    // Create a new chart
-    window.simulationChart = new Chart(ctx, {
+    const results = data.results;
+
+    let chartConfig = {
         type: 'line',
-        data: {
-            labels: results.map((_, i) => i + 1),   
-            datasets: [
-                {
-                    label: 'Stock Price Over Time',
-                    data: results, 
-                    borderColor: 'rgb(28, 197, 39)',
-                    borderWidth: 2,
-                    fill: false,
-                },
-            ],
-        },
+        data: {},
         options: {
-            responsive: true,   
+            responsive: true,
             plugins: {
                 legend: {
                     display: true,
                 },
             },
             scales: {
-                x: { title: { display: true, text: 'Day' } },
-                y: { title: { display: true, text: 'Price' } },
+                x: { title: { display: true, text: '' } },
+                y: { title: { display: true, text: '' } },
             },
-            
         },
-    });
+    };
+
+
+    if (simulationType === "monteCarlo"){
+
+        chartConfig.data = {
+            labels: results.map((_, i) => i + 1), // Days
+            datasets: [
+                {
+                    label: 'Stock Price Over Time',
+                    data: results, // Stock prices
+                    borderColor: 'rgb(28, 197, 39)',
+                    borderWidth: 2,
+                    fill: false,
+                },
+            ],
+        };
+        chartConfig.options.scales.x.title.text = 'Day';
+        chartConfig.options.scales.y.title.text = 'Price';
+
+    }else if(simulationType ==="markovChain"){
+
+        chartConfig.data = {
+            labels: results.time, // Time intervals
+            datasets: results.states.map((state, index) => ({
+                label: `State ${index + 1}`, // State names
+                data: state, // Data for each state
+                borderColor: `hsl(${index * 50}, 70%, 50%)`, // Different colors for each state
+                borderWidth: 2,
+                fill: false,
+            })),
+        };
+        chartConfig.options.scales.x.title.text = 'Time Interval';
+        chartConfig.options.scales.y.title.text = 'Probability';
+    }else{
+        chartConfig.data = {
+            labels: results.generations, // Generations
+            datasets: [
+                {
+                    label: 'Best Fitness Over Generations',
+                    data: results.bestFitness, // Best fitness values
+                    borderColor: 'rgb(255, 99, 132)',
+                    borderWidth: 2,
+                    fill: false,
+                },
+                {
+                    label: 'Average Fitness Over Generations',
+                    data: results.averageFitness, // Average fitness values
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 2,
+                    fill: false,
+                },
+            ],
+        };
+        chartConfig.options.scales.x.title.text = 'Generation';
+        chartConfig.options.scales.y.title.text = 'Fitness';
+
+    };
+    window.simulationChart = new Chart(ctx, chartConfig);
+    
 };
 
 

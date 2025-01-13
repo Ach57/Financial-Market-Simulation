@@ -2,6 +2,9 @@ import sys
 import json
 import random
 
+
+
+
 def monte_carlo_simulation(initial_investment, years, risk, simulations=1000) -> list:
     results = []
     
