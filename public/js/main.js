@@ -67,6 +67,7 @@ function displaySimulationChart(simulationType,data) {
     }
 
     const results = data.results;
+    console.log(results)
 
     let chartConfig = {
         type: 'line',
@@ -106,17 +107,25 @@ function displaySimulationChart(simulationType,data) {
     }else if(simulationType ==="markovChain"){
 
         chartConfig.data = {
-            labels: results.time, // Time intervals
-            datasets: results.states.map((state, index) => ({
-                label: `State ${index + 1}`, // State names
-                data: state, // Data for each state
-                borderColor: `hsl(${index * 50}, 70%, 50%)`, // Different colors for each state
+            labels: Array.from({ length: results[0].length }, (_, i) => i + 1), // Time intervals (assumes uniform length across simulations)
+            datasets: ['Bullish', 'Bearish', 'Stagnant'].map((stateName) => ({
+                label: stateName, // Label for the state
+                data: results
+                    .flatMap((simulation) =>
+                        simulation.filter((entry) => entry.state === stateName).map((entry) => entry.price)
+                    ), // Extract prices for the current state across simulations
+                borderColor:
+                    stateName === 'Bullish'
+                        ? 'rgb(28, 197, 39)'
+                        : stateName === 'Bearish'
+                        ? 'rgb(255, 99, 132)'
+                        : 'rgb(54, 162, 235)', // Different colors for each state
                 borderWidth: 2,
                 fill: false,
             })),
         };
         chartConfig.options.scales.x.title.text = 'Time Interval';
-        chartConfig.options.scales.y.title.text = 'Probability';
+        chartConfig.options.scales.y.title.text = 'Price';
     }else{
         chartConfig.data = {
             labels: results.generations, // Generations

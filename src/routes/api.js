@@ -74,7 +74,6 @@ router.post('/simulate', async (req, res) => {
             };
 
             const results = await markovChainSimulation(inputData);
-            console.log(results);
             return res.json({
                 success: true,
                 data: results,
