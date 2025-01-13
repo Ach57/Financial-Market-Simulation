@@ -27,7 +27,7 @@ router.post('/simulate', async (req, res) => {
         };
 
         
-        const results = await runSimulation(inputData);
+        const results = await monteCarloSimulation(inputData);
 
         res.json({
             success: true,
