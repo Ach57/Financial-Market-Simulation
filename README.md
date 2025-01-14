@@ -80,5 +80,4 @@ Applications:
 
 ---
 
-## Folder Structure
-
+![Monte Carlo Formula](https://latex.codecogs.com/png.latex?I%20%3D%20%5Cint_a%5Eb%20f(x)%20dx%20%5Capprox%20%5Cfrac%7Bb-a%7D%7BN%7D%20%5Csum_%7Bi%3D1%7D%5EN%20f(x_i))
