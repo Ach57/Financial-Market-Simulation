@@ -67,7 +67,6 @@ function displaySimulationChart(simulationType,data) {
     }
 
     const results = data.results;
-    console.log(results)
 
     let chartConfig = {
         type: 'line',
@@ -88,7 +87,7 @@ function displaySimulationChart(simulationType,data) {
 
 
     if (simulationType === "monteCarlo"){
-
+        console.log(results)
         chartConfig.data = {
             labels: results.map((_, i) => i + 1), // Days
             datasets: [
@@ -119,7 +118,7 @@ function displaySimulationChart(simulationType,data) {
                         ? 'rgb(28, 197, 39)'
                         : stateName === 'Bearish'
                         ? 'rgb(255, 99, 132)'
-                        : 'rgb(54, 162, 235)', // Different colors for each state
+                        : 'rgb(54, 162, 235)',
                 borderWidth: 2,
                 fill: false,
             })),
@@ -127,6 +126,7 @@ function displaySimulationChart(simulationType,data) {
         chartConfig.options.scales.x.title.text = 'Time Interval';
         chartConfig.options.scales.y.title.text = 'Price';
     }else{
+        
         chartConfig.data = {
             labels: results.generations, // Generations
             datasets: [
@@ -148,6 +148,7 @@ function displaySimulationChart(simulationType,data) {
         };
         chartConfig.options.scales.x.title.text = 'Generation';
         chartConfig.options.scales.y.title.text = 'Fitness';
+        
 
     };
     window.simulationChart = new Chart(ctx, chartConfig);
